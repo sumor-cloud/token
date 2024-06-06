@@ -1,0 +1,12 @@
+# IDE configuration
+.idea/
+
+# dependencies
+node_modules/
+
+# tmp
+tmp/
+output/
+
+# runtime config
+ssl/
