@@ -19,7 +19,7 @@ npm i @sumor/token-middleware --save
 
 ### Node.JS version
 
-Require Node.JS version 16.x or above
+Require Node.JS version 18.x or above
 
 ### require Node.JS ES module
 
