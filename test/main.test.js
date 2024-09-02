@@ -209,7 +209,7 @@ describe('Main', () => {
     })
 
     app.get('/setToken1', async (req, res) => {
-      res.setHeader('Set-Cookie', 'o=123; Path=/; HttpOnly; Max-Age=86400')
+      res.setHeader('Set-Cookie', 'o=123; Path=/; HttpOnly; Max-Age=8640000')
       req.token.id = req.query.code
 
       res.send('OK')
@@ -217,8 +217,8 @@ describe('Main', () => {
 
     app.get('/setToken2', async (req, res) => {
       res.setHeader('Set-Cookie', [
-        'o=123; Path=/; HttpOnly; Max-Age=86400',
-        'k=sss; Path=/; HttpOnly; Max-Age=86400'
+        'o=123; Path=/; HttpOnly; Max-Age=8640000',
+        'k=sss; Path=/; HttpOnly; Max-Age=8640000'
       ])
       req.token.id = req.query.code
 
@@ -269,10 +269,10 @@ describe('Main', () => {
     expect(response4.data).toBe('OK')
     console.log(response4.headers['set-cookie'])
     expect(
-      response4.headers['set-cookie'].indexOf('o=123; Path=/; HttpOnly; Max-Age=86400') >= 0
+      response4.headers['set-cookie'].indexOf('o=123; Path=/; HttpOnly; Max-Age=8640000') >= 0
     ).toEqual(true)
     expect(
-      response4.headers['set-cookie'].indexOf('t=567; Path=/; HttpOnly; Max-Age=86400') >= 0
+      response4.headers['set-cookie'].indexOf('t=567; Path=/; HttpOnly; Max-Age=8640000') >= 0
     ).toEqual(true)
 
     const response5 = await axios({
@@ -283,13 +283,13 @@ describe('Main', () => {
     expect(response5.data).toBe('OK')
     console.log(response5.headers['set-cookie'])
     expect(
-      response5.headers['set-cookie'].indexOf('o=123; Path=/; HttpOnly; Max-Age=86400') >= 0
+      response5.headers['set-cookie'].indexOf('o=123; Path=/; HttpOnly; Max-Age=8640000') >= 0
     ).toEqual(true)
     expect(
-      response5.headers['set-cookie'].indexOf('k=sss; Path=/; HttpOnly; Max-Age=86400') >= 0
+      response5.headers['set-cookie'].indexOf('k=sss; Path=/; HttpOnly; Max-Age=8640000') >= 0
     ).toEqual(true)
     expect(
-      response5.headers['set-cookie'].indexOf('t=567; Path=/; HttpOnly; Max-Age=86400') >= 0
+      response5.headers['set-cookie'].indexOf('t=567; Path=/; HttpOnly; Max-Age=8640000') >= 0
     ).toEqual(true)
 
     const response6 = await axios({
@@ -300,7 +300,7 @@ describe('Main', () => {
     expect(response6.data).toBe('OK')
     console.log(response6.headers['set-cookie'])
     expect(
-      response5.headers['set-cookie'].indexOf('t=567; Path=/; HttpOnly; Max-Age=86400') >= 0
+      response5.headers['set-cookie'].indexOf('t=567; Path=/; HttpOnly; Max-Age=8640000') >= 0
     ).toEqual(true)
 
     await app.close()
