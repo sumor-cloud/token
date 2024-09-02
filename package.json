@@ -1,7 +1,7 @@
 {
   "name": "@sumor/token-middleware",
   "description": "A token middleware for ExpressJS.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "repository": "sumor-cloud/token-middleware",
   "author": "Sumor Cloud Ltd",
