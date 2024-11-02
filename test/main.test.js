@@ -3,14 +3,15 @@
 import { describe, expect, it } from '@jest/globals'
 import createApp from '@sumor/ssl-server'
 import axios from 'axios'
-import https from 'https'
+// import https from 'https'
 
 import type from '../src/type.js'
 import parseCookie from '../src/parseCookie.js'
 import Token from '../src/Token.js'
 import middleware from '../src/index.js'
 
-const port = 40200
+const port1 = 40200
+const port2 = 40201
 describe('Main', () => {
   it('type', () => {
     expect(type('abc')).toBe('string')
@@ -231,19 +232,19 @@ describe('Main', () => {
       res.send('OK')
     })
 
-    await app.listen(port)
+    await app.listen(null, port1)
 
     const response1 = await axios({
       method: 'get',
-      url: `https://localhost:${port}/existToken`,
-      httpsAgent: new https.Agent({ rejectUnauthorized: false })
+      url: `http://localhost:${port1}/existToken`
+      // httpsAgent: new https.Agent({ rejectUnauthorized: false })
     })
     expect(response1.data).toBe('string')
 
     const response2 = await axios({
       method: 'get',
-      url: `https://localhost:${port}/getTokenId`,
-      httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+      url: `http://localhost:${port1}/getTokenId`,
+      // httpsAgent: new https.Agent({ rejectUnauthorized: false }),
       headers: {
         Cookie: 't=a123'
       }
@@ -252,8 +253,8 @@ describe('Main', () => {
 
     const response3 = await axios({
       method: 'get',
-      url: `https://localhost:${port}/getTokenId`,
-      httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+      url: `http://localhost:${port1}/getTokenId`,
+      // httpsAgent: new https.Agent({ rejectUnauthorized: false }),
       headers: {
         cookie: 't=a123; o=a234'
       }
@@ -263,8 +264,8 @@ describe('Main', () => {
 
     const response4 = await axios({
       method: 'get',
-      url: `https://localhost:${port}/setToken1?code=567`,
-      httpsAgent: new https.Agent({ rejectUnauthorized: false })
+      url: `http://localhost:${port1}/setToken1?code=567`
+      // httpsAgent: new https.Agent({ rejectUnauthorized: false })
     })
     expect(response4.data).toBe('OK')
     console.log(response4.headers['set-cookie'])
@@ -277,8 +278,8 @@ describe('Main', () => {
 
     const response5 = await axios({
       method: 'get',
-      url: `https://localhost:${port}/setToken2?code=567`,
-      httpsAgent: new https.Agent({ rejectUnauthorized: false })
+      url: `http://localhost:${port1}/setToken2?code=567`
+      // httpsAgent: new https.Agent({ rejectUnauthorized: false })
     })
     expect(response5.data).toBe('OK')
     console.log(response5.headers['set-cookie'])
@@ -294,8 +295,8 @@ describe('Main', () => {
 
     const response6 = await axios({
       method: 'get',
-      url: `https://localhost:${port}/setToken3?code=567`,
-      httpsAgent: new https.Agent({ rejectUnauthorized: false })
+      url: `http://localhost:${port1}/setToken3?code=567`
+      // httpsAgent: new https.Agent({ rejectUnauthorized: false })
     })
     expect(response6.data).toBe('OK')
     console.log(response6.headers['set-cookie'])
@@ -305,4 +306,30 @@ describe('Main', () => {
 
     await app.close()
   })
+  it(
+    'Authorization header',
+    async () => {
+      const app = await createApp()
+      app.use(middleware)
+
+      app.get('/getToken', async (req, res) => {
+        return res.send(req.token.id)
+      })
+
+      await app.listen(null, port2)
+
+      const tokenId = 'A123'
+      const response = await axios({
+        method: 'get',
+        url: `http://localhost:${port2}/getToken`,
+        // httpsAgent: new https.Agent({ rejectUnauthorized: false }),
+        headers: {
+          Authorization: `Bearer ${tokenId}`
+        }
+      })
+      await app.close()
+      expect(response.data).toBe(tokenId)
+    },
+    20 * 1000
+  )
 })

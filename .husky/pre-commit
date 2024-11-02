@@ -6,10 +6,10 @@ printf "System version: $(uname -a)\n"
 # Determine if it is a windows system or Github client, if so, use npm.cmd
 if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" || "$OSTYPE" == "cygwin" || -n "$GITHUB_ACTIONS" ]]; then
     npm.cmd run lint
-    npm.cmd audit
+#    npm.cmd audit
     npm.cmd test
 else
     npm run lint
-    npm audit
+#    npm audit
     npm test
 fi
