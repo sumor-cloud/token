@@ -3,7 +3,6 @@
 import { describe, expect, it } from '@jest/globals'
 import createApp from '@sumor/ssl-server'
 import axios from 'axios'
-// import https from 'https'
 
 import type from '../src/type.js'
 import parseCookie from '../src/parseCookie.js'
@@ -235,16 +234,16 @@ describe('Main', () => {
     await app.listen(null, port1)
 
     const response1 = await axios({
+      proxy: false,
       method: 'get',
       url: `http://localhost:${port1}/existToken`
-      // httpsAgent: new https.Agent({ rejectUnauthorized: false })
     })
     expect(response1.data).toBe('string')
 
     const response2 = await axios({
+      proxy: false,
       method: 'get',
       url: `http://localhost:${port1}/getTokenId`,
-      // httpsAgent: new https.Agent({ rejectUnauthorized: false }),
       headers: {
         Cookie: 't=a123'
       }
@@ -252,9 +251,9 @@ describe('Main', () => {
     expect(response2.data).toBe('a123')
 
     const response3 = await axios({
+      proxy: false,
       method: 'get',
       url: `http://localhost:${port1}/getTokenId`,
-      // httpsAgent: new https.Agent({ rejectUnauthorized: false }),
       headers: {
         cookie: 't=a123; o=a234'
       }
@@ -263,9 +262,9 @@ describe('Main', () => {
     expect(response3.headers['set-cookie']).toBeUndefined()
 
     const response4 = await axios({
+      proxy: false,
       method: 'get',
       url: `http://localhost:${port1}/setToken1?code=567`
-      // httpsAgent: new https.Agent({ rejectUnauthorized: false })
     })
     expect(response4.data).toBe('OK')
     console.log(response4.headers['set-cookie'])
@@ -277,9 +276,9 @@ describe('Main', () => {
     ).toEqual(true)
 
     const response5 = await axios({
+      proxy: false,
       method: 'get',
       url: `http://localhost:${port1}/setToken2?code=567`
-      // httpsAgent: new https.Agent({ rejectUnauthorized: false })
     })
     expect(response5.data).toBe('OK')
     console.log(response5.headers['set-cookie'])
@@ -294,9 +293,9 @@ describe('Main', () => {
     ).toEqual(true)
 
     const response6 = await axios({
+      proxy: false,
       method: 'get',
       url: `http://localhost:${port1}/setToken3?code=567`
-      // httpsAgent: new https.Agent({ rejectUnauthorized: false })
     })
     expect(response6.data).toBe('OK')
     console.log(response6.headers['set-cookie'])
@@ -320,9 +319,9 @@ describe('Main', () => {
 
       const tokenId = 'A123'
       const response = await axios({
+        proxy: false,
         method: 'get',
         url: `http://localhost:${port2}/getToken`,
-        // httpsAgent: new https.Agent({ rejectUnauthorized: false }),
         headers: {
           Authorization: `Bearer ${tokenId}`
         }
